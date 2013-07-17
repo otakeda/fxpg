@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta charset="utf-8" />
+        <title>fx</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+        <link rel="stylesheet" href="style.css" />
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script  type="text/javascript">
+
+$(document).bind( "pagebeforechange", function( e, data ) {
+	if ( typeof data.toPage === "string" ) {
+		var u = $.mobile.path.parseUrl( data.toPage ),
+		    re = /^#graph/;
+//alert(u.hash.search(re));
+		if ( u.hash.search(re) !== -1 ) {
+			pageSelector = u.hash.replace( /\?.*$/, "" );
+			var curname = u.hash.replace( /.*cur=/, "" );
+//alert(curname);
+			var $page = $( pageSelector );
+			$page.page();
+			$.mobile.changePage( $page, data.options );
+	$("#graph0").attr("src","http://leanprojectman.com/php/n3/fxgraph.php?cur="+curname);
+			e.preventDefault();
+		}
+	}
+});
+/*
+$( '#graph' ).live( 'pageinit',function(event){
+	$("#graph0").attr("src","http://leanprojectman.com/php/n3/fxgraph.php?cur=USDJPY");
+	
+});
+$(document).bind("mobileinit", function(){  
+    $.mobile.page.prototype.options.addBackBtn = false;  
+    $.mobile.ajaxEnabled = false;  
+});  
+*/
+
+
+$(function(){
+        var result = null;
+        var cur_name="USDJPY";
+	$.ajax({ type : 'GET', url : 'http://leanprojectman.com/php/n3/fxjson.php',
+		cache : false,
+		async : false,
+		dataType : 'json',
+		success : function(json) {
+			$.each(json, function(key, val){
+				result = key;
+//                              alert(result);
+				var i=0;
+				$("#"+key+" span:first").text(val);
+				if ((val>1)||(val<-1)) $("#"+key+" span:first").css("background","#FF6666");
+				switch (val){
+				case 1:
+				case -1:
+				$("#"+key+" a:first").css("color","yellow");
+					break;
+				case 2:
+				case -2:
+					$("#"+key+" a:first").css("color","red");
+					break;
+				case 3:
+				case -3:
+					$("#"+key+" a:first").css("color","magenta");
+					break;
+				default:
+					$("#"+key+" a:first").css("color","");
+				
+				}
+                        });
+                }
+        });
+
+});
+</script>
+
+</head> 
+<body> 
+
+<div data-role="page" id="top" data-title="fx-keihou"  data-theme="a" data-content-theme="a">
+  <div data-role="header">
+    <h1>ＦＸケイホウ</h1>
+	<a href="?" data-icon="refresh" class="ui-btn-right">Reload</a>
+  </div><!-- /header -->
+
+  <div data-role="content">	
+    <div class="top0" style="margin:0 auto 0 auto;">
+	<img src="images/worldmap2.jpg" alt="top page">
+    </div >
+    <div class="content-primary main-content"> <ul data-role="listview">
+	<li id="USDJPY"> <a href="#graph?cur=USDJPY" data-transition="slide" >
+<img src="images/USDJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+USD/JPY</a> <span class="ui-li-count"></span> </li>
+
+	<li id="EURJPY"> <a href="#graph?cur=EURJPY" data-transition="slide" >
+<img src="images/EURJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+EUR/JPY</a>  <span class="ui-li-count"></span></li>
+	<li id="EURUSD"> <a href="#graph?cur=EURUSD" data-transition="slide" >
+<img src="images/EURUSD.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+EUR/USD</a> <span class="ui-li-count"></span> </li>
+	<li id="AUDJPY"> <a href="#graph?cur=AUDJPY" data-transition="slide" >
+<img src="images/AUDJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+AUD/JPY</a> <span class="ui-li-count"></span> </li>
+	<li id="GBPJPY"> <a href="#graph?cur=GBPJPY" data-transition="slide" >
+<img src="images/GBPJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+GBP/JPY</a> <span class="ui-li-count"></span> </li>
+	<li id="NZDJPY"> <a href="#graph?cur=NZDJPY" data-transition="slide" >
+<img src="images/NZDJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+NZD/JPY</a> <span class="ui-li-count"></span> </li>
+	<li id="CADJPY"> <a href="#graph?cur=CADJPY" data-transition="slide" >
+<img src="images/CADJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+CAD/JPY</a> <span class="ui-li-count"></span> </li>
+	<li id="CHFJPY"> <a href="#graph?cur=CHFJPY" data-transition="slide" >
+<img src="images/CHFJPY.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+CHF/JPY</a> <span class="ui-li-count"></span> </li>
+	<li id="GBPUSD"> <a href="#graph?cur=GBPUSD" data-transition="slide" >
+<img src="images/GBPUSD.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+GBP/USD</a> <span class="ui-li-count"></span> </li>
+	<li id="USDCHF"> <a href="#graph?cur=USDCHF" data-transition="slide" >
+<img src="images/USDCHF.png" class="ui-li-icon" style="left:+2px ; top:-1px;" alt="img">
+USD/CHF</a> <span class="ui-li-count"></span> </li>
+    </ul></div>
+  </div><!-- /content -->
+  <div data-role="footer"  data-position="fixed">
+<div class="ui-grid-b">
+	<div class="ui-block-a"></div>
+	<div class="ui-block-b"></div>
+	<div class="ui-block-c">
+	<a href="#config" data-role="button" data-icon="gear">Config</a>
+</div>
+</div><!-- /grid-a -->
+  </div><!-- /footer -->
+</div><!-- /page -->
+<div data-role="page" id="graph" data-title="fx-keihou"  data-theme="a" data-content-theme="a">
+  <div data-role="header">
+    <h1>１時間足　２４時間</h1>
+	<a href="#top" data-transitioon="slide" data-icon="back" ></a>
+	<a href="javascript:document.getElementById('graph0').contentDocument.location.reload(true);" data-icon="refresh" class="ui-btn-right">Reload</a>
+  </div><!-- /header -->
+  <div data-role="content">	
+    <div style="margin-left:auto ;margin-right:auto;">
+	<iframe id="graph0" src="http://leanprojectman.com/php/n3/fxgraph.php?cur=USDJPY"  height="300" seamless></iframe>
+   </div>
+  </div><!-- /content -->
+  <div data-role="footer"  data-position="fixed">
+  </div><!-- /footer -->
+</div><!-- /page -->
+<div data-role="page" id="config" data-title="fx-keihou"  data-theme="a" data-content-theme="a">
+  <div data-role="header">
+    <h1>設定</h1>
+	<a href="#top" data-transitioon="slide" data-icon="back" ></a>
+  </div><!-- /header -->
+  <div data-role="content">	
+    <div style="margin-left:auto ;margin-right:auto;">
+	<label for="length0">Hours</label>
+	<input type="range" name="slider" id="length0" value="24" min="8" max="120"  />
+
+<br />
+
+<label for="select-choice-0" class="select">１日の警報回数(max)</label>
+<select name="select-choice-0" id="select-choice-1">
+   <option value="standard">制限なし</option>
+   <option value="rush">1</option>
+   <option value="express">5</option>
+   <option value="overnight">10</option>
+</select>
+    </div>
+			<div data-role="fieldcontain"> 
+			    <fieldset data-role="controlgroup" data-type="horizontal"> 
+			     	<legend>ボリンジャーバンド</legend> 
+			         	<input type="radio" name="bbsigma" id="radio-choice-c" value="on" checked="checked" /> 
+			         	<label for="radio-choice-c">２σ</label> 
+			         	<input type="radio" name="bbsigma" id="radio-choice-d" value="off" /> 
+			         	<label for="radio-choice-d">３σ</label> 
+			    </fieldset> 
+			</div> 
+  </div><!-- /content -->
+  <div data-role="footer"  data-position="fixed">
+  </div><!-- /footer -->
+</div><!-- /page -->
+
+</body>
+</html>
